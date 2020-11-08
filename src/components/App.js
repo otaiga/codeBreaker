@@ -76,6 +76,9 @@ const App = () => {
             <button
               className="bg-green-500 rounded text-white items-center p-3 w-20"
               onClick={() => {
+                if (currentPegSelection.some((a) => a === 0)) {
+                  return;
+                }
                 submittedForRow();
               }}
             >
