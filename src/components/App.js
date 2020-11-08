@@ -1,21 +1,35 @@
 import { useState } from "react";
+import { colors } from "../support/utils";
 import Peg from "./peg";
 
 const App = () => {
-  const codeToCrack = [3, 4, 1, 3];
+  const generateRandom = () =>
+    Math.floor(Math.random() * (colors.length - 1) + 1);
+
+  const generateCodeToCrack = () => [
+    generateRandom(),
+    generateRandom(),
+    generateRandom(),
+    generateRandom(),
+  ];
+
   const startingRow = 9;
   const [currentRow, setCurrentRow] = useState(startingRow);
   const [currentPegSelection, setCurrentPegSelection] = useState([0, 0, 0, 0]);
+  const [codeToCrack, setCodeToCrack] = useState(generateCodeToCrack());
 
   const submittedForRow = () => {
     const newRowIndex = currentRow - 1;
     if (JSON.stringify(codeToCrack) === JSON.stringify(currentPegSelection)) {
       alert("Game End! You Cracked the code!");
+      setCodeToCrack(generateCodeToCrack());
+      setCurrentRow(startingRow);
       return;
     }
     if (newRowIndex === 0) {
       alert("Game End!");
       setCurrentRow(startingRow);
+      setCodeToCrack(generateCodeToCrack());
     }
     alert("No luck, try again");
     setCurrentPegSelection([0, 0, 0, 0]);
@@ -77,9 +91,9 @@ const App = () => {
   return (
     <div className="container mx-auto">
       <div className="bg-gray-500">
-        <p className="text-2xl text-white p-4 text-center">MasterMind</p>
+        <p className="text-2xl text-white p-4 text-center">Code Breaker!</p>
       </div>
-      {renderBoard()}
+      <div className="bg-gray-400">{renderBoard()}</div>
     </div>
   );
 };
