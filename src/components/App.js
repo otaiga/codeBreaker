@@ -92,11 +92,16 @@ const App = () => {
     ));
 
   return (
-    <div className="container mx-auto">
+    <div className="flex flex-col h-screen">
       <div className="bg-gray-500">
         <p className="text-2xl text-white p-4 text-center">Code Breaker!</p>
       </div>
-      <div className="bg-gray-400">{renderBoard()}</div>
+      <div className="bg-gray-400 p-8 h-full">{renderBoard()}</div>
+      <footer className="flex flex-col items-center px-4 pt-2 pb-4 text-white bg-gray-700 ">
+        <div className="flex justify-between pt-2 text-xs">
+          <p>© 2020&nbsp;Otaiga</p>
+        </div>
+      </footer>
     </div>
   );
 };
