@@ -6,7 +6,7 @@ const Peg = ({ currentRow, rowIndex, pegIndex, handlePegColor }) => {
 
   return (
     <div
-      className={`border mx-2 border-black rounded-full ${colors[pegColorIndex]} sm:h-12 sm:w-12 h-8 w-8`}
+      className={`border mx-2 border-black rounded-full ${colors[pegColorIndex]} sm:h-12 sm:w-12 h-10 w-10`}
       onClick={() => {
         if (currentRow !== rowIndex) {
           return;
