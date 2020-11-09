@@ -4,12 +4,8 @@ import Peg from "./Peg";
 import KeyPegs from "./keyPegs";
 
 const App = () => {
-  const generateCodeToCrack = () => [
-    generateRandom(),
-    generateRandom(),
-    generateRandom(),
-    generateRandom(),
-  ];
+  const generateCodeToCrack = () =>
+    new Array(4).fill(undefined).map(generateRandom);
 
   const chances = 10;
   const [currentRow, setCurrentRow] = useState(chances - 1);
@@ -49,7 +45,7 @@ const App = () => {
             codeToCrack[index] === currentPegSelection[i] &&
             !alreadyMatched.includes(index)
           ) {
-            keyPegs.push(1);
+            keyPegs[i] = 1;
             alreadyMatched.push(index);
             break;
           }
