@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { colors } from "../support/utils";
-import Peg from "./peg";
+import Peg from "./Peg";
+import KeyPegs from "./keyPegs";
 
 const App = () => {
   const generateRandom = () =>
@@ -13,15 +14,16 @@ const App = () => {
     generateRandom(),
   ];
 
-  const startingRow = 9;
-  const [currentRow, setCurrentRow] = useState(startingRow);
+  const chances = 10;
+  const [currentRow, setCurrentRow] = useState(chances - 1);
   const [currentPegSelection, setCurrentPegSelection] = useState([0, 0, 0, 0]);
   const [codeToCrack, setCodeToCrack] = useState(generateCodeToCrack());
+  const [keyPegColorIndex, setKeyPegColorIndex] = useState([]);
 
   const resetGame = () => {
     setCurrentPegSelection([0, 0, 0, 0]);
     setCodeToCrack(generateCodeToCrack());
-    setCurrentRow(startingRow);
+    setCurrentRow(chances - 1);
     //todo reset all pegs
   };
 
@@ -38,6 +40,27 @@ const App = () => {
     }
     const newRowIndex = currentRow - 1;
     alert("No luck, try again");
+    const keyPegs = [];
+    const alreadyMatched = [];
+    for (let i = 0; i < currentPegSelection.length; i++) {
+      if (codeToCrack[i] === currentPegSelection[i]) {
+        keyPegs.push(2);
+        alreadyMatched.push(i);
+        continue;
+      }
+      if (
+        codeToCrack.includes(currentPegSelection[i]) &&
+        !alreadyMatched.includes(i)
+      ) {
+        keyPegs.push(1);
+        alreadyMatched.push(i);
+        continue;
+      }
+      keyPegs.push(0);
+    }
+    const updatedKeyPegs = [...keyPegColorIndex];
+    updatedKeyPegs.push(keyPegs);
+    setKeyPegColorIndex(updatedKeyPegs);
     setCurrentPegSelection([0, 0, 0, 0]);
     setCurrentRow(newRowIndex);
   };
@@ -49,9 +72,10 @@ const App = () => {
   };
 
   const renderBoard = () =>
-    new Array(10).fill(undefined).map((_val, index) => (
-      <div key={index} className="flex justify-center items-center">
-        <div className="flex justify-center p-2">
+    new Array(chances).fill(undefined).map((_val, index) => (
+      <div key={index} className="flex justify-center p-2 items-center">
+        <KeyPegs keyPegColorIndex={keyPegColorIndex[chances - 1 - index]} />
+        <div className="flex justify-center">
           <Peg
             pegIndex={0}
             currentRow={currentRow}
@@ -80,7 +104,7 @@ const App = () => {
         <div className="p-3">
           {currentRow === index ? (
             <button
-              className="bg-green-500 rounded text-white items-center p-3 w-20"
+              className="bg-green-500 rounded text-white items-center p-2"
               onClick={() => {
                 if (currentPegSelection.some((a) => a === 0)) {
                   return;
@@ -88,11 +112,9 @@ const App = () => {
                 submittedForRow();
               }}
             >
-              Submit
+              Go
             </button>
-          ) : (
-            <div className="p-3 w-20" />
-          )}
+          ) : null}
         </div>
       </div>
     ));
