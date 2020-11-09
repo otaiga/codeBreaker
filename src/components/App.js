@@ -7,6 +7,44 @@ const App = () => {
   const generateCodeToCrack = () =>
     new Array(4).fill(undefined).map(generateRandom);
 
+  const calculateKeyPegs = () => {
+    const keyPegs = [];
+    const alreadyMatched = [];
+
+    const checkDirectMatch = () => {
+      for (let index = 0; index < currentPegSelection.length; index++) {
+        if (codeToCrack[index] === currentPegSelection[index]) {
+          keyPegs[index] = 2;
+          alreadyMatched.push(currentPegSelection[index]);
+          continue;
+        }
+        keyPegs[index] = 0;
+      }
+    };
+
+    const checkCloseMatch = () => {
+      for (let index = 0; index < currentPegSelection.length; index++) {
+        if (codeToCrack.includes(currentPegSelection[index])) {
+          const matchedFiltered = alreadyMatched.filter(
+            (val) => val === currentPegSelection[index]
+          );
+          const codeFiltered = codeToCrack.filter(
+            (val) => val === currentPegSelection[index]
+          );
+          if (matchedFiltered.length < codeFiltered.length) {
+            keyPegs[index] = 1;
+            alreadyMatched.push(currentPegSelection[index]);
+          }
+          continue;
+        }
+      }
+    };
+
+    checkDirectMatch();
+    checkCloseMatch();
+    return keyPegs;
+  };
+
   const chances = 10;
   const [currentRow, setCurrentRow] = useState(chances - 1);
   const [currentPegSelection, setCurrentPegSelection] = useState([0, 0, 0, 0]);
@@ -36,28 +74,7 @@ const App = () => {
 
     const newRowIndex = currentRow - 1;
     alert("No luck, try again");
-    const keyPegs = [];
-    const alreadyMatched = [];
-    for (let i = 0; i < currentPegSelection.length; i++) {
-      if (codeToCrack.includes(currentPegSelection[i])) {
-        for (let index = 0; index < codeToCrack.length; index++) {
-          if (
-            codeToCrack[index] === currentPegSelection[i] &&
-            !alreadyMatched.includes(index)
-          ) {
-            keyPegs[i] = 1;
-            alreadyMatched.push(index);
-            break;
-          }
-        }
-      }
-      if (codeToCrack[i] === currentPegSelection[i]) {
-        keyPegs[i] = 2;
-        alreadyMatched.push(i);
-        continue;
-      }
-      keyPegs.push(0);
-    }
+    const keyPegs = calculateKeyPegs();
     const updatedKeyPegs = [...keyPegColorIndex];
     updatedKeyPegs.push(keyPegs);
     setKeyPegColorIndex(updatedKeyPegs);
@@ -76,7 +93,7 @@ const App = () => {
 
   const renderBoard = () =>
     new Array(chances).fill(undefined).map((_val, index) => (
-      <div key={index} className="flex justify-center p-2 items-center">
+      <div key={index} className="flex p-2 items-center justify-center">
         <KeyPegs keyPegColorIndex={keyPegColorIndex[chances - 1 - index]} />
         <div className="flex justify-center">
           <Peg
@@ -109,19 +126,22 @@ const App = () => {
           />
         </div>
         <div className="p-3">
-          {currentRow === index ? (
-            <button
-              className="bg-green-500 rounded text-white items-center p-2"
-              onClick={() => {
-                if (currentPegSelection.some((a) => a === 0)) {
-                  return;
-                }
-                submittedForRow();
-              }}
-            >
-              Go
-            </button>
-          ) : null}
+          <button
+            className={`bg-green-500 rounded text-white items-center p-2 ${
+              currentRow === index ? null : "disabled opacity-0"
+            }`}
+            onClick={() => {
+              if (currentRow !== index) {
+                return;
+              }
+              if (currentPegSelection.some((a) => a === 0)) {
+                return;
+              }
+              submittedForRow();
+            }}
+          >
+            Go!
+          </button>
         </div>
       </div>
     ));
@@ -135,7 +155,9 @@ const App = () => {
           </div>
         </div>
         <main className="container flex-auto mx-auto">
-          <div className="bg-gray-300 p-8 h-full">{renderBoard()}</div>
+          <div className="bg-gray-300 p-8 h-full">
+            <div>{renderBoard()}</div>
+          </div>
         </main>
         <div className="flex-none">
           <footer className="flex flex-col items-center pb-4 text-white bg-gray-700 ">

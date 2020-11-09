@@ -7,7 +7,7 @@ const KeyPegs = ({ keyPegColorIndex }) => {
   const colors = [null, "bg-black", "bg-green-500"];
 
   return (
-    <div className="border rounded border-black p-2">
+    <div className="border rounded border-black p-2 mr-2">
       <div className="flex">
         <div
           className={`border border-black rounded-full h-2 w-2 ${
