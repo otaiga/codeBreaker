@@ -16,13 +16,14 @@ const App = () => {
   const [currentPegSelection, setCurrentPegSelection] = useState([0, 0, 0, 0]);
   const [codeToCrack, setCodeToCrack] = useState(generateCodeToCrack());
   const [keyPegColorIndex, setKeyPegColorIndex] = useState([]);
+  const [pegColors, setPegColors] = useState([]);
 
   const resetGame = () => {
     setCurrentPegSelection([0, 0, 0, 0]);
     setCodeToCrack(generateCodeToCrack());
     setCurrentRow(chances - 1);
     setKeyPegColorIndex([]);
-    //todo reset all pegs
+    setPegColors([]);
   };
 
   const submittedForRow = () => {
@@ -70,8 +71,11 @@ const App = () => {
 
   const handlePegColor = (pegIndex, colorIndex) => {
     const updatedPegSelection = [...currentPegSelection];
+    const updatedPegColors = [...pegColors];
     updatedPegSelection[pegIndex] = colorIndex;
+    updatedPegColors[currentRow] = updatedPegSelection;
     setCurrentPegSelection(updatedPegSelection);
+    setPegColors(updatedPegColors);
   };
 
   const renderBoard = () =>
@@ -84,24 +88,28 @@ const App = () => {
             currentRow={currentRow}
             rowIndex={index}
             handlePegColor={handlePegColor}
+            colorsSet={pegColors[index]}
           />
           <Peg
             pegIndex={1}
             currentRow={currentRow}
             rowIndex={index}
             handlePegColor={handlePegColor}
+            colorsSet={pegColors[index]}
           />
           <Peg
             pegIndex={2}
             currentRow={currentRow}
             rowIndex={index}
             handlePegColor={handlePegColor}
+            colorsSet={pegColors[index]}
           />
           <Peg
             pegIndex={3}
             currentRow={currentRow}
             rowIndex={index}
             handlePegColor={handlePegColor}
+            colorsSet={pegColors[index]}
           />
         </div>
         <div className="p-3">
