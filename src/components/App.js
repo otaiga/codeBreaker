@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { colors } from "../support/utils";
+import { generateRandom } from "../support/utils";
 import Peg from "./Peg";
 import KeyPegs from "./keyPegs";
 
 const App = () => {
-  const generateRandom = () =>
-    Math.floor(Math.random() * (colors.length - 1) + 1);
-
   const generateCodeToCrack = () => [
     generateRandom(),
     generateRandom(),
@@ -24,6 +21,7 @@ const App = () => {
     setCurrentPegSelection([0, 0, 0, 0]);
     setCodeToCrack(generateCodeToCrack());
     setCurrentRow(chances - 1);
+    setKeyPegColorIndex([]);
     //todo reset all pegs
   };
 
@@ -38,21 +36,26 @@ const App = () => {
       resetGame();
       return;
     }
+
     const newRowIndex = currentRow - 1;
     alert("No luck, try again");
     const keyPegs = [];
     const alreadyMatched = [];
     for (let i = 0; i < currentPegSelection.length; i++) {
-      if (codeToCrack[i] === currentPegSelection[i]) {
-        keyPegs.push(2);
-        alreadyMatched.push(i);
-        continue;
+      if (codeToCrack.includes(currentPegSelection[i])) {
+        for (let index = 0; index < codeToCrack.length; index++) {
+          if (
+            codeToCrack[index] === currentPegSelection[i] &&
+            !alreadyMatched.includes(index)
+          ) {
+            keyPegs.push(1);
+            alreadyMatched.push(index);
+            break;
+          }
+        }
       }
-      if (
-        codeToCrack.includes(currentPegSelection[i]) &&
-        !alreadyMatched.includes(i)
-      ) {
-        keyPegs.push(1);
+      if (codeToCrack[i] === currentPegSelection[i]) {
+        keyPegs[i] = 2;
         alreadyMatched.push(i);
         continue;
       }
@@ -120,19 +123,23 @@ const App = () => {
     ));
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-none">
-        <div className="bg-gray-500">
-          <p className="text-2xl text-white p-4 text-center">Code Breaker!</p>
-        </div>
-      </div>
-      <div className="bg-gray-300 p-8 h-full">{renderBoard()}</div>
-      <div className="flex-none">
-        <footer className="flex flex-col items-center pb-4 text-white bg-gray-700 ">
-          <div className="flex justify-between pt-2 text-xs">
-            <p>© 2020&nbsp;Otaiga</p>
+    <div className="max-w-screen-lg mx-auto">
+      <div className="flex flex-col h-screen">
+        <div className="flex-none">
+          <div className="bg-gray-500">
+            <p className="text-2xl text-white p-4 text-center">Code Breaker!</p>
           </div>
-        </footer>
+        </div>
+        <main className="container flex-auto mx-auto">
+          <div className="bg-gray-300 p-8 h-full">{renderBoard()}</div>
+        </main>
+        <div className="flex-none">
+          <footer className="flex flex-col items-center pb-4 text-white bg-gray-700 ">
+            <div className="flex justify-between pt-2 text-xs">
+              <p>© 2020&nbsp;Otaiga</p>
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
   );

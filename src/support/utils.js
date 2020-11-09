@@ -7,3 +7,6 @@ export const colors = [
   "bg-black",
   "bg-white",
 ];
+
+export const generateRandom = () =>
+  Math.floor(Math.random() * (colors.length - 1) + 1);
