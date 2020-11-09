@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generateRandom } from "../support/utils";
+import { generateRandom, colors } from "../support/utils";
 import Peg from "./Peg";
 import KeyPegs from "./keyPegs";
 
@@ -93,7 +93,7 @@ const App = () => {
 
   const renderBoard = () =>
     new Array(chances).fill(undefined).map((_val, index) => (
-      <div key={index} className="flex p-2 items-center justify-center">
+      <div key={index} className="flex items-center justify-center">
         <KeyPegs keyPegColorIndex={keyPegColorIndex[chances - 1 - index]} />
         <div className="flex justify-center">
           <Peg
@@ -127,8 +127,8 @@ const App = () => {
         </div>
         <div className="p-3">
           <button
-            className={`bg-green-500 rounded text-white items-center p-2 ${
-              currentRow === index ? null : "disabled opacity-0"
+            className={`bg-green-500 hover:bg-green-700 rounded text-white items-center p-2 ${
+              currentRow === index ? null : "disabled opacity-0 cursor-default"
             }`}
             onClick={() => {
               if (currentRow !== index) {
@@ -151,16 +151,35 @@ const App = () => {
       <div className="flex flex-col h-screen">
         <div className="flex-none">
           <div className="bg-gray-500">
-            <p className="text-2xl text-white p-4 text-center">Code Breaker!</p>
+            <p className="text-2xl text-white p-2 text-center">Code Breaker!</p>
           </div>
         </div>
-        <main className="container flex-auto mx-auto">
-          <div className="bg-gray-300 p-8 h-full">
+        <main className="container flex-auto mx-auto bg-gray-300">
+          <div className="p-2 sm:p-8">
+            <div className="flex flex-col justify-center items-center font-bold">
+              <p className="pb-2">Crack the code</p>
+              <div className="flex mr-5">
+                <div
+                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
+                />
+                <div
+                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
+                />
+                <div
+                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
+                />
+                <div
+                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-300 pb-2">
             <div>{renderBoard()}</div>
           </div>
         </main>
         <div className="flex-none">
-          <footer className="flex flex-col items-center pb-4 text-white bg-gray-700 ">
+          <footer className="flex flex-col items-center pb-2 text-white bg-gray-700 ">
             <div className="flex justify-between pt-2 text-xs">
               <p>© 2020&nbsp;Otaiga</p>
             </div>
