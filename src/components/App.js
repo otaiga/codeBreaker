@@ -2,6 +2,7 @@ import { useState } from "react";
 import { generateRandom, colors } from "../support/utils";
 import Peg from "./Peg";
 import KeyPegs from "./keyPegs";
+import Popup from "./Popup";
 
 const App = () => {
   const generateCodeToCrack = () =>
@@ -31,7 +32,10 @@ const App = () => {
           const codeFiltered = codeToCrack.filter(
             (val) => val === currentPegSelection[index]
           );
-          if (matchedFiltered.length < codeFiltered.length) {
+          if (
+            matchedFiltered.length < codeFiltered.length &&
+            keyPegs[index] !== 2
+          ) {
             keyPegs[index] = 1;
             alreadyMatched.push(currentPegSelection[index]);
           }
@@ -51,8 +55,11 @@ const App = () => {
   const [codeToCrack, setCodeToCrack] = useState(generateCodeToCrack());
   const [keyPegColorIndex, setKeyPegColorIndex] = useState([]);
   const [pegColors, setPegColors] = useState([]);
+  const [popup, setPopup] = useState({ show: false });
+  const [showCode, setShowCode] = useState(false);
 
   const resetGame = () => {
+    setShowCode(false);
     setCurrentPegSelection([0, 0, 0, 0]);
     setCodeToCrack(generateCodeToCrack());
     setCurrentRow(chances - 1);
@@ -60,20 +67,41 @@ const App = () => {
     setPegColors([]);
   };
 
+  const handleOkClick = () => {
+    if (popup.reset) {
+      resetGame();
+    }
+    setPopup({ show: false });
+  };
+
   const submittedForRow = () => {
     if (JSON.stringify(codeToCrack) === JSON.stringify(currentPegSelection)) {
-      alert("Game End! You Cracked the code!");
-      resetGame();
+      setShowCode(true);
+      setPopup({
+        title: "Congratulations!",
+        message: "You have cracked the code. Try again?",
+        show: true,
+        reset: true,
+      });
       return;
     }
     if (currentRow === 0) {
-      alert("No luck - Game End!");
-      resetGame();
+      setShowCode(true);
+      setPopup({
+        title: "Game End!",
+        message: "You have failed to crack the code. Try again?",
+        show: true,
+        reset: true,
+      });
       return;
     }
 
     const newRowIndex = currentRow - 1;
-    alert("No luck, try again");
+    setPopup({
+      title: "Incorrect!",
+      message: "Please try again",
+      show: true,
+    });
     const keyPegs = calculateKeyPegs();
     const updatedKeyPegs = [...keyPegColorIndex];
     updatedKeyPegs.push(keyPegs);
@@ -96,34 +124,15 @@ const App = () => {
       <div key={index} className="flex items-center justify-center">
         <KeyPegs keyPegColorIndex={keyPegColorIndex[chances - 1 - index]} />
         <div className="flex justify-center">
-          <Peg
-            pegIndex={0}
-            currentRow={currentRow}
-            rowIndex={index}
-            handlePegColor={handlePegColor}
-            colorsSet={pegColors[index]}
-          />
-          <Peg
-            pegIndex={1}
-            currentRow={currentRow}
-            rowIndex={index}
-            handlePegColor={handlePegColor}
-            colorsSet={pegColors[index]}
-          />
-          <Peg
-            pegIndex={2}
-            currentRow={currentRow}
-            rowIndex={index}
-            handlePegColor={handlePegColor}
-            colorsSet={pegColors[index]}
-          />
-          <Peg
-            pegIndex={3}
-            currentRow={currentRow}
-            rowIndex={index}
-            handlePegColor={handlePegColor}
-            colorsSet={pegColors[index]}
-          />
+          {new Array(4).fill(undefined).map((_val, i) => (
+            <Peg
+              pegIndex={i}
+              currentRow={currentRow}
+              rowIndex={index}
+              handlePegColor={handlePegColor}
+              colorsSet={pegColors[index]}
+            />
+          ))}
         </div>
         <div className="p-3">
           <button
@@ -158,19 +167,14 @@ const App = () => {
           <div className="p-2 sm:p-8">
             <div className="flex flex-col justify-center items-center font-bold">
               <p className="pb-2">Crack the code</p>
-              <div className="flex mr-5">
-                <div
-                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
-                />
-                <div
-                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
-                />
-                <div
-                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
-                />
-                <div
-                  className={`border mx-2 border-black rounded-full bg-gray-500 sm:h-12 sm:w-12 h-10 w-10`}
-                />
+              <div className={`flex mr-5 ${showCode ? "z-50" : null}`}>
+                {new Array(4).fill(undefined).map((_val, index) => (
+                  <div
+                    className={`border mx-2 border-black rounded-full ${
+                      showCode ? colors[codeToCrack[index]] : "bg-gray-500"
+                    } sm:h-12 sm:w-12 h-10 w-10`}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -186,6 +190,13 @@ const App = () => {
           </footer>
         </div>
       </div>
+      {popup && popup.show && (
+        <Popup
+          title={popup.title}
+          message={popup.message}
+          handleOkClick={handleOkClick}
+        />
+      )}
     </div>
   );
 };
