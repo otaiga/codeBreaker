@@ -126,6 +126,7 @@ const App = () => {
         <div className="flex justify-center">
           {new Array(4).fill(undefined).map((_val, i) => (
             <Peg
+              key={i}
               pegIndex={i}
               currentRow={currentRow}
               rowIndex={index}
@@ -134,7 +135,7 @@ const App = () => {
             />
           ))}
         </div>
-        <div className="p-3">
+        <div className="px-2">
           <button
             className={`bg-green-500 hover:bg-green-700 rounded text-white items-center p-2 ${
               currentRow === index ? null : "disabled opacity-0 cursor-default"
@@ -170,9 +171,10 @@ const App = () => {
               <div className={`flex mr-5 ${showCode ? "z-50" : null}`}>
                 {new Array(4).fill(undefined).map((_val, index) => (
                   <div
+                    key={index}
                     className={`border mx-2 border-black rounded-full ${
                       showCode ? colors[codeToCrack[index]] : "bg-gray-500"
-                    } sm:h-12 sm:w-12 h-10 w-10`}
+                    } sm:h-12 sm:w-12 h-8 w-8`}
                   />
                 ))}
               </div>
