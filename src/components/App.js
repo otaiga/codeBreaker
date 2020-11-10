@@ -135,7 +135,7 @@ const App = () => {
             />
           ))}
         </div>
-        <div className="px-2">
+        <div className="px-2 py-0 sm:py-3">
           <button
             className={`bg-green-500 hover:bg-green-700 rounded text-white items-center p-2 ${
               currentRow === index ? null : "disabled opacity-0 cursor-default"
