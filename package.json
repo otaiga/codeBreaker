@@ -14,8 +14,8 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "buid:css": "postcss src/styles/tailwind.css -o src/styles/styles.css",
-    "prestart": "npm run buid:css",
+    "build:css": "NODE_ENV=production postcss src/styles/tailwind.css -o src/styles/styles.css",
+    "prestart": "npm run build:css",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
