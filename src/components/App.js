@@ -11,29 +11,21 @@ const App = () => {
   const calculateKeyPegs = () => {
     const keyPegs = [];
     const clonedCodeToCrack = [...codeToCrack];
+    const pegSelection = [...currentPegSelection];
 
-    const checkDirectMatch = () => {
-      for (let index = 0; index < currentPegSelection.length; index++) {
-        if (currentPegSelection[index] === clonedCodeToCrack[index]) {
-          keyPegs.push(2);
-          clonedCodeToCrack[index] = null;
-          continue;
-        }
+    for (let index = 0; index < pegSelection.length; index++) {
+      if (pegSelection[index] === clonedCodeToCrack[index]) {
+        keyPegs.push(2);
+        clonedCodeToCrack[index] = null;
+        pegSelection[index] = null;
+        continue;
       }
-    };
-
-    const checkCloseMatch = () => {
-      for (let index = 0; index < currentPegSelection.length; index++) {
-        if (currentPegSelection.includes(clonedCodeToCrack[index])) {
-          keyPegs.push(1);
-          clonedCodeToCrack[index] = null;
-          continue;
-        }
+      if (pegSelection.includes(clonedCodeToCrack[index])) {
+        keyPegs.push(1);
+        clonedCodeToCrack[index] = null;
+        continue;
       }
-    };
-
-    checkDirectMatch();
-    checkCloseMatch();
+    }
     return keyPegs;
   };
 
