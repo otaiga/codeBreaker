@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/codeBreaker/static/css/main.914a316d.chunk.css",
-    "main.js": "/codeBreaker/static/js/main.de983a70.chunk.js",
-    "main.js.map": "/codeBreaker/static/js/main.de983a70.chunk.js.map",
+    "main.js": "/codeBreaker/static/js/main.b543ffdf.chunk.js",
+    "main.js.map": "/codeBreaker/static/js/main.b543ffdf.chunk.js.map",
     "runtime-main.js": "/codeBreaker/static/js/runtime-main.ee3624fb.js",
     "runtime-main.js.map": "/codeBreaker/static/js/runtime-main.ee3624fb.js.map",
-    "static/js/2.461fdd5f.chunk.js": "/codeBreaker/static/js/2.461fdd5f.chunk.js",
-    "static/js/2.461fdd5f.chunk.js.map": "/codeBreaker/static/js/2.461fdd5f.chunk.js.map",
+    "static/js/2.0e849839.chunk.js": "/codeBreaker/static/js/2.0e849839.chunk.js",
+    "static/js/2.0e849839.chunk.js.map": "/codeBreaker/static/js/2.0e849839.chunk.js.map",
     "index.html": "/codeBreaker/index.html",
     "static/css/main.914a316d.chunk.css.map": "/codeBreaker/static/css/main.914a316d.chunk.css.map",
-    "static/js/2.461fdd5f.chunk.js.LICENSE.txt": "/codeBreaker/static/js/2.461fdd5f.chunk.js.LICENSE.txt"
+    "static/js/2.0e849839.chunk.js.LICENSE.txt": "/codeBreaker/static/js/2.0e849839.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ee3624fb.js",
-    "static/js/2.461fdd5f.chunk.js",
+    "static/js/2.0e849839.chunk.js",
     "static/css/main.914a316d.chunk.css",
-    "static/js/main.de983a70.chunk.js"
+    "static/js/main.b543ffdf.chunk.js"
   ]
 }
