@@ -10,22 +10,42 @@ const App = () => {
 
   const calculateKeyPegs = () => {
     const keyPegs = [];
-    const clonedCodeToCrack = [...codeToCrack];
-    const pegSelection = [...currentPegSelection];
+    const alreadyMatched = [];
 
-    for (let index = 0; index < pegSelection.length; index++) {
-      if (pegSelection[index] === clonedCodeToCrack[index]) {
-        keyPegs.push(2);
-        clonedCodeToCrack[index] = null;
-        pegSelection[index] = null;
-        continue;
+    const checkDirectMatch = () => {
+      for (let index = 0; index < currentPegSelection.length; index++) {
+        if (codeToCrack[index] === currentPegSelection[index]) {
+          keyPegs[index] = 2;
+          alreadyMatched.push(currentPegSelection[index]);
+          continue;
+        }
+        keyPegs[index] = 0;
       }
-      if (pegSelection.includes(clonedCodeToCrack[index])) {
-        keyPegs.push(1);
-        clonedCodeToCrack[index] = null;
-        continue;
+    };
+
+    const checkCloseMatch = () => {
+      for (let index = 0; index < currentPegSelection.length; index++) {
+        if (codeToCrack.includes(currentPegSelection[index])) {
+          const matchedFiltered = alreadyMatched.filter(
+            (val) => val === currentPegSelection[index]
+          );
+          const codeFiltered = codeToCrack.filter(
+            (val) => val === currentPegSelection[index]
+          );
+          if (
+            matchedFiltered.length < codeFiltered.length &&
+            keyPegs[index] !== 2
+          ) {
+            keyPegs[index] = 1;
+            alreadyMatched.push(currentPegSelection[index]);
+          }
+          continue;
+        }
       }
-    }
+    };
+
+    checkDirectMatch();
+    checkCloseMatch();
     return keyPegs;
   };
 
