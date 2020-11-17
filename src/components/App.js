@@ -5,8 +5,8 @@ import KeyPegs from "./keyPegs";
 import Popup from "./Popup";
 
 const App = () => {
-  const generateCodeToCrack = () =>
-    new Array(4).fill(undefined).map(generateRandom);
+  const generateCodeToCrack = () => [1, 1, 1, 2];
+  // new Array(4).fill(undefined).map(generateRandom);
 
   const calculateKeyPegs = () => {
     const keyPegs = [];
@@ -17,9 +17,7 @@ const App = () => {
         if (codeToCrack[index] === currentPegSelection[index]) {
           keyPegs[index] = 2;
           alreadyMatched.push(currentPegSelection[index]);
-          continue;
         }
-        keyPegs[index] = 0;
       }
     };
 
@@ -39,14 +37,13 @@ const App = () => {
             keyPegs[index] = 1;
             alreadyMatched.push(currentPegSelection[index]);
           }
-          continue;
         }
       }
     };
 
     checkDirectMatch();
     checkCloseMatch();
-    return keyPegs;
+    return keyPegs.sort();
   };
 
   const chances = 10;
