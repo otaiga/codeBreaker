@@ -5,8 +5,8 @@ import KeyPegs from "./keyPegs";
 import Popup from "./Popup";
 
 const App = () => {
-  const generateCodeToCrack = () => [1, 1, 1, 2];
-  // new Array(4).fill(undefined).map(generateRandom);
+  const generateCodeToCrack = () =>
+    new Array(4).fill(undefined).map(generateRandom);
 
   const calculateKeyPegs = () => {
     const keyPegs = [];
